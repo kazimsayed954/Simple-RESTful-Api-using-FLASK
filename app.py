@@ -15,11 +15,34 @@ Employee_info={
     }
 }
 
-
-class Employee(Resource):
+class Help(Resource):
     def get(self):
-        return Employee_info
-    
-api.add_resource(Employee,"/info")
+        help={
+            'Available rest APIs are' :['/ping','/info','/info/ename']
+        }
+        return help
+
+class ping(Resource):
+    def get(self):
+        status={
+            'Status':'Alive'
+        }
+        return status
+"""class Employee(Resource):
+    def get(self,ename):
+        return Employee_info.get(ename)"""
+
+class Employees(Resource):
+    def get(self,ename=None):
+        if(ename):
+            return Employee_info.get(ename)
+        else:
+            return Employee_info
+
+
+api.add_resource(Employees,"/info","/info/<string:ename>")
+#api.add_resource(Employee,"/info/<string:ename>")
+api.add_resource(Help,"/")
+api.add_resource(ping,'/ping')
 
 app.run(port=5000,host="localhost")
